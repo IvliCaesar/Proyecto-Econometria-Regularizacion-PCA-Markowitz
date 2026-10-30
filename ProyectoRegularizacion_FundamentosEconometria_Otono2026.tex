@@ -1,0 +1,200 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{booktabs,array,enumitem}
+\usepackage{graphicx}
+\usepackage{url}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\renewcommand{\arraystretch}{1.15}
+\setlist[enumerate,1]{label=\alph*),leftmargin=2em,itemsep=0.25em}
+\newcommand{\unos}{\mathbf 1}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\VIF}{\mathrm{VIF}}
+\newcommand{\ejercicio}[1]{\par\medskip\textbf{Ejercicio #1.}\space}
+
+\begin{document}
+
+\newcommand{\logoUP}{%
+  \IfFileExists{logo_up.png}{\includegraphics[width=\linewidth]{logo_up}}{%
+    \framebox[\linewidth]{\rule{0pt}{2.2cm}\small Logo UP}}}
+\noindent
+\begin{minipage}[c]{0.18\linewidth}
+  \centering\logoUP
+\end{minipage}%
+\hfill
+\begin{minipage}[c]{0.60\linewidth}
+  \centering
+  {\bfseries UNIVERSIDAD PANAMERICANA}\\[5pt]
+  {\bfseries PROYECTO DE REGULARIZACIÓN,\\[2pt] PCA Y MARKOWITZ}\\[5pt]
+  {\bfseries FUNDAMENTOS DE ECONOMETRÍA}\\[5pt]
+  Dr. César Galindo -- Otoño 2026
+\end{minipage}%
+\hfill
+\begin{minipage}[c]{0.18\linewidth}
+  \centering\logoUP
+\end{minipage}
+
+\vspace{0.8em}
+
+\section*{Datos}
+
+Rendimientos mensuales en porcentaje de 30 portafolios de industria de EE.\,UU., con el factor de mercado \texttt{Mkt-RF} y la tasa libre de riesgo \texttt{RF} (Kenneth R.\ French Data Library, 2000-01 a 2026-09). El archivo \texttt{datos/industrias\_ff30\_mensual.csv} y el notebook guiado están en \url{https://github.com/IvliCaesar/Proyecto-Econometria-Regularizacion-PCA-Markowitz}. Define los rendimientos en exceso restando \texttt{RF}. El periodo de \emph{entrenamiento} son los primeros 240 meses (2000-01 a 2019-12) y el de \emph{prueba}, los últimos 81 (2020-01 a 2026-09).
+
+Con la matrícula de un integrante como semilla, \texttt{rng = numpy.random.default\_rng(SEMILLA)}, sobre la lista de sectores en el orden del archivo, elige primero el sector objetivo, \texttt{rng.choice(sectores)}, y después los activos del portafolio, \texttt{rng.choice(sectores, size=12, replace=False)}.
+
+\section*{Parte 1. Regresión lineal, Ridge, Lasso y Elastic Net (25 puntos)}
+
+Se comparan los estimadores que minimizan:
+\begin{align*}
+\text{MCO:}\quad & \norm{y-X\beta}^2, &
+\text{Ridge:}\quad & \norm{y-X\beta}^2+\lambda\norm{\beta}_2^2,\\
+\text{Lasso:}\quad & \tfrac{1}{2n}\norm{y-X\beta}^2+\lambda\norm{\beta}_1, &
+\text{Elastic Net:}\quad & \tfrac{1}{2n}\norm{y-X\beta}^2+\lambda\bigl[\rho\norm{\beta}_1+\tfrac{1-\rho}{2}\norm{\beta}_2^2\bigr].
+\end{align*}
+
+\ejercicio{1.1 (En papel)}
+\begin{enumerate}
+  \item Deduce $\hat\beta_{\text{Ridge}}=(X^\top X+\lambda I)^{-1}X^\top y$. Si $X=UDV^\top$ es la descomposición en valores singulares, demuestra que Ridge multiplica cada componente de $\hat\beta_{\text{MCO}}$ en la dirección $v_j$ por $d_j^2/(d_j^2+\lambda)$. ¿Qué direcciones se encogen más?
+  \item Si $X^\top X=nI$ y $z_j=X_j^\top y/n$, encuentra $\hat\beta_j$ para Ridge y para Lasso con las funciones objetivo de arriba.
+  \item Con ese resultado, explica por qué Lasso produce ceros exactos y Ridge no.
+\end{enumerate}
+
+\ejercicio{1.2 (Replicar un sector)} Regresa el exceso del sector objetivo sobre los excesos de los otros 29 sectores.
+\begin{enumerate}
+  \item Estima MCO con los datos de entrenamiento. Reporta $R^2$, $R^2$ ajustada, el estadístico $F$ y cuántas pendientes son significativas al 5\%.
+  \item Ajusta Ridge, Lasso y Elastic Net, estandarizando las regresoras con los datos de entrenamiento y eligiendo $\lambda$ por validación cruzada de 5 bloques, solo con esos datos.
+  \item Para los cuatro métodos, reporta en una tabla el RMSE de entrenamiento y de prueba, la $R^2$ de prueba, el número de coeficientes distintos de cero y la norma de los coeficientes estandarizados.
+  \item Grafica las trayectorias de los coeficientes en función de $\lambda$ para Ridge y para Lasso.
+  \item Repite el inciso c) entrenando solo con los últimos $n\in\{36,60,120,240\}$ meses de entrenamiento. Grafica el RMSE de prueba contra $n$.
+  \item Comprueba numéricamente las fórmulas del Ejercicio 1.1 a) con $\lambda=100$.
+  \item Con muestra completa, aplica la prueba de Diebold-Mariano a $d_t=e_{\text{MCO},t}^2-e_{\text{Ridge},t}^2$ en el periodo de prueba: regresa $d_t$ sobre una constante, con errores estándar HAC de 3 rezagos.
+  \item ¿Qué método gana con cada $n$, y por cuánto? ¿La diferencia es significativa? ¿Por qué una sola ventana no basta para concluir?
+\end{enumerate}
+
+\ejercicio{1.3 (Monte Carlo)} Simula $X_{ij}=\sqrt{\varrho}\,z_i+\sqrt{1-\varrho}\,e_{ij}$ y $y=X\beta+1.5\,\varepsilon$, con $z_i$, $e_{ij}$ y $\varepsilon_i$ normales estándar independientes. Cruza las condiciones:
+\begin{itemize}[itemsep=0.1em]
+  \item colinealidad: $\varrho\in\{0.1,\ 0.95\}$;
+  \item verdad: \emph{escasa} (3 coeficientes iguales a $\pm1$ y el resto cero) o \emph{densa} (todos normales, reescalados a $\norm{\beta}=\sqrt3$);
+  \item datos: \emph{abundantes} ($n=200$, $p=20$) o \emph{escasos} ($n=40$, $p=30$).
+\end{itemize}
+Para cada uno de los 8 escenarios y 4 métodos, haz 20 réplicas con una muestra independiente y 500 observaciones de prueba. Registra el vector de respuestas $(\log\mathrm{RMSE},\ \log\norm{\hat\beta-\beta})$ y resume ambas respuestas en una tabla de método por escenario.
+
+\ejercicio{1.4 (Tabla MANOVA)} Con los datos del Ejercicio 1.3, considera los factores método ($a=4$) y escenario ($b=8$), con $r=20$ réplicas.
+\begin{enumerate}
+  \item Calcula directamente las matrices de sumas de cuadrados y productos cruzados
+  \begin{gather*}
+  H_A=br\sum_i(\bar y_{i\cdot}-\bar y)(\bar y_{i\cdot}-\bar y)^\top,\qquad
+  H_B=ar\sum_j(\bar y_{\cdot j}-\bar y)(\bar y_{\cdot j}-\bar y)^\top,\\
+  H_{AB}=r\sum_{i,j}(\bar y_{ij}-\bar y_{i\cdot}-\bar y_{\cdot j}+\bar y)(\bar y_{ij}-\bar y_{i\cdot}-\bar y_{\cdot j}+\bar y)^\top,\qquad
+  E=\sum_{i,j,k}(y_{ijk}-\bar y_{ij})(y_{ijk}-\bar y_{ij})^\top,
+  \end{gather*}
+  y verifica que $H_A+H_B+H_{AB}+E=T$, la matriz total.
+  \item Si $\theta_1,\dots,\theta_s$ son los valores propios de $E^{-1}H$, calcula para cada efecto
+  \[
+  \Lambda=\prod_i\frac{1}{1+\theta_i},\qquad
+  V=\sum_i\frac{\theta_i}{1+\theta_i},\qquad
+  T_{HL}=\sum_i\theta_i,\qquad
+  R=\max_i\theta_i .
+  \]
+  \item Compara con \texttt{statsmodels} y presenta la tabla MANOVA: efecto, estadístico, valor, grados de libertad, $F$, valor $p$ y $\eta^2=1-\Lambda^{1/s}$, con $s=\min(\text{respuestas},\,gl_H)$.
+  \item Realiza una ANOVA por respuesta con corrección de Bonferroni. Calcula la razón entre la mayor y la menor varianza residual entre celdas. ¿Se cumple la igualdad de covarianzas? ¿Qué tanto puedes confiar en los valores $p$?
+  \item ¿Cuál estadístico reportas como principal y por qué? ¿Qué renglón de la tabla responde a la pregunta de si la conveniencia de un método depende del caso?
+\end{enumerate}
+
+\ejercicio{1.5 (Conclusión)} Indica si la regularización mejora a MCO en predicción y en estimación de $\beta$, y qué método prefieres, en cada situación: muchos datos con baja colinealidad; muchos datos con alta colinealidad; pocos datos con verdad escasa; pocos datos con verdad densa. Justifica con tus cifras. ¿Qué pierdes al usar Lasso frente a MCO si tu objetivo es hacer inferencia sobre un coeficiente?
+
+\section*{Parte 2. Multicolinealidad (15 puntos)}
+
+Usa los datos de Longley (\texttt{statsmodels}), con $y=$ \texttt{TOTEMP} y las otras seis variables como regresoras. Recuerda que $\VIF_j=1/(1-R_j^2)$.
+
+\ejercicio{2.1 (En papel)} Con dos regresoras de correlación $r$, demuestra que $\VIF_1=\VIF_2=1/(1-r^2)$. Si $r=0.95$, ¿cuánto vale el VIF y por cuánto se multiplica el error estándar de cada coeficiente?
+
+\ejercicio{2.2 (Diagnóstico)} Calcula el VIF y la tolerancia de cada regresora, y el número de condición de $X$ estandarizada. Estima MCO y compara la significancia conjunta con la individual.
+
+\ejercicio{2.3 (Inestabilidad)} Reestima MCO omitiendo una observación a la vez. Reporta para cada pendiente el mínimo y el máximo, e indica cuáles cambian de signo.
+
+\ejercicio{2.4 (Remedios)} Compara por error de validación \emph{leave-one-out}, VIF máximo y número de condición (cuando apliquen):
+\begin{enumerate}
+  \item MCO con todas las regresoras;
+  \item MCO sin \texttt{GNP} ni \texttt{POP};
+  \item MCO con $\texttt{GNP}/(\texttt{GNPDEFL}\cdot\texttt{POP})$, \texttt{UNEMP} y \texttt{ARMED};
+  \item regresión sobre los componentes principales que acumulen 95\% de la varianza (PCR);
+  \item mínimos cuadrados parciales con 2 componentes (PLS);
+  \item Ridge, con $\lambda$ elegida por validación cruzada.
+\end{enumerate}
+
+\ejercicio{2.5 (Centrar)} Calcula el VIF máximo de las regresoras de Longley antes y después de centrarlas. Haz lo mismo con $\{x,x^2\}$ y $\{x-\bar x,(x-\bar x)^2\}$, donde $x=$ \texttt{UNEMP}. ¿Cuándo sirve centrar, y por qué?
+
+\ejercicio{2.6 (Sectores)} Calcula los VIF y el número de condición de las regresoras del Ejercicio 1.2 y compáralos con los de Longley.
+
+\ejercicio{2.7 (Conclusión)} ¿Qué remedio eliges si se busca interpretar el efecto de cada variable? ¿Y si solo se busca predecir? ¿La multicolinealidad sesga a MCO? ¿Cuándo no hace falta corregirla?
+
+\section*{Parte 3. PCA a partir de un vector aleatorio (15 puntos)}
+
+Sea $X\in\mathbb{R}^p$ un vector aleatorio con media $\mu$ y covarianza $\Sigma$.
+
+\ejercicio{3.1 (Teoría)} Plantea $\max_a\ \mathrm{Var}(a^\top X)$ sujeto a $a^\top a=1$ y demuestra, con multiplicadores de Lagrange, que $a$ es vector propio de $\Sigma$ y que la varianza máxima es el mayor valor propio. Demuestra que $Y_k=a_k^\top(X-\mu)$ cumple $\mathrm{Var}(Y_k)=\lambda_k$ y $\mathrm{Cov}(Y_j,Y_k)=0$ para $j\neq k$. En papel, para $\Sigma=\bigl(\begin{smallmatrix}2&1\\1&2\end{smallmatrix}\bigr)$, encuentra los componentes y la varianza explicada, y haz tres iteraciones del método de la potencia desde $v_0=(1,0)^\top$.
+
+\ejercicio{3.2 (Población)} Con \texttt{default\_rng(SEMILLA + 3)}, genera una matriz ortogonal $Q$ de $5\times5$ (factorización QR de una matriz normal) y define $\Sigma=Q\,\mathrm{diag}(8,\,3,\,1.5,\,0.5,\,0.2)\,Q^\top$ y $\mu$ normal. Calcula los valores y vectores propios, y la varianza explicada acumulada.
+
+\ejercicio{3.3 (Direcciones aleatorias)} Sortea 20\,000 direcciones unitarias $a$ al azar y grafica el histograma de $a^\top\Sigma a$. Verifica que $\lambda_{\min}\le a^\top\Sigma a\le\lambda_{\max}$.
+
+\ejercicio{3.4 (Muestra)} Genera $n\in\{30,100,1000,10\,000\}$ realizaciones de $X\sim N(\mu,\Sigma)$. Reporta $\hat\lambda_1$ y el ángulo $\arccos|\hat a_1^\top a_1|$. Verifica que la covarianza muestral de los $Y_k$ es aproximadamente $\mathrm{diag}(\lambda_k)$.
+
+\ejercicio{3.5 (Vector inicial aleatorio)} Sin rutinas de valores propios, implementa el método de la potencia desde un vector aleatorio unitario $v_0$,
+\[
+v_{t+1}=\frac{\Sigma v_t}{\norm{\Sigma v_t}},\qquad \hat\lambda=v^\top\Sigma v,
+\]
+y la deflación $\Sigma\leftarrow\Sigma-\hat\lambda_1\hat a_1\hat a_1^\top$ para obtener los cinco componentes.
+\begin{enumerate}
+  \item Compara con el Ejercicio 3.2.
+  \item Grafica en escala logarítmica el error angular por iteración, junto con la tasa $(\lambda_2/\lambda_1)^t$.
+  \item ¿Qué ocurre si $\lambda_2/\lambda_1\approx1$? ¿Y si $v_0\perp a_1$? ¿Por qué elegir $v_0$ al azar resuelve este último caso?
+\end{enumerate}
+
+\ejercicio{3.6 (Sectores)} Aplica tu método a la matriz de correlación de los 30 sectores, en entrenamiento. Reporta la varianza explicada por los primeros 5 componentes, las cargas del primero y su correlación con \texttt{Mkt-RF}. Interpreta el primer componente. ¿Qué implica para la diversificación y para la multicolinealidad?
+
+\section*{Parte 4. Solución a Markowitz (15 puntos)}
+
+Para los 12 activos asignados, sean $\mu$ y $\Sigma$ la media y la covarianza anualizadas (entrenamiento), y $r_f$ la tasa libre anualizada. Define
+\[
+A=\unos^\top\Sigma^{-1}\mu,\qquad B=\mu^\top\Sigma^{-1}\mu,\qquad C=\unos^\top\Sigma^{-1}\unos,\qquad D=BC-A^2.
+\]
+
+\ejercicio{4.1 (Teoría)} Para $\min_w\tfrac12w^\top\Sigma w$ sujeto a $w^\top\mu=m$ y $w^\top\unos=1$, demuestra que
+\[
+w=\delta\,\Sigma^{-1}\mu+\gamma\,\Sigma^{-1}\unos,\qquad
+\delta=\frac{Cm-A}{D},\quad\gamma=\frac{B-Am}{D},\qquad
+\sigma^2(m)=\frac{Cm^2-2Am+B}{D}.
+\]
+Deduce el portafolio de mínima varianza global (GMV), $w_g=\Sigma^{-1}\unos/C$, y el tangente, $w_t=\Sigma^{-1}(\mu-r_f\unos)/(A-Cr_f)$. ¿Qué falla si $r_f\ge A/C$? En papel, con dos activos de volatilidades 20\% y 30\% y correlación 0.25, calcula los pesos de GMV y su volatilidad.
+
+\ejercicio{4.2 (Implementación)} Programa la solución cerrada. Verifica las restricciones y la fórmula de $\sigma^2(m)$, y compara los pesos con un optimizador numérico.
+
+\ejercicio{4.3 (Frontera)} Grafica la frontera eficiente con y sin ventas en corto, los activos, GMV, el portafolio tangente y la línea del mercado de capitales. Verifica que el Sharpe tangente es $\sqrt{B-2Ar_f+Cr_f^2}$.
+
+\ejercicio{4.4 (Dos fondos)} Para un rendimiento $m$ dado, encuentra $\alpha$ tal que $w_m=\alpha w_g+(1-\alpha)w_t$ y verifícalo numéricamente.
+
+\ejercicio{4.5 (Fuera de muestra)} Con pesos estimados en entrenamiento, rebalanceo mensual y sin costos, compara en el periodo de prueba: 1/N; GMV muestral; tangente muestral; GMV con covarianza de Ledoit-Wolf; GMV con covarianza de 3 componentes principales más la diagonal residual; y tangente sin ventas en corto. Reporta rendimiento, volatilidad, Sharpe en prueba y en entrenamiento, máxima caída, mayor peso absoluto y suma de pesos cortos, además del número de condición de cada covarianza.
+
+\ejercicio{4.6 (Estabilidad)} Remuestrea 200 veces los meses de entrenamiento (\emph{bootstrap}), recalcula los pesos de la tangente y de GMV, y compara sus rangos intercuartiles. ¿Por qué difieren?
+
+\ejercicio{4.7 (Reestimación)} Al inicio de cada año del periodo de prueba, estima con los 60 meses anteriores y conserva los pesos 12 meses. Compara 1/N, GMV muestral, GMV con Ledoit-Wolf, tangente muestral y tangente sin ventas en corto. ¿Qué le ocurre a la tangente muestral, y por qué?
+
+\ejercicio{4.8 (Conclusión)} ¿Cuál estrategia ganó fuera de muestra, con pesos fijos y con reestimación? ¿Cuánto se perdió entre el Sharpe de entrenamiento y el de prueba? Explica las analogías: Ledoit-Wolf es a Markowitz lo que Ridge es a MCO, y la covarianza de PCA es a Markowitz lo que PCR es a MCO. ¿Recomendarías la solución cerrada a un fondo real? ¿Qué limitaciones tiene tu prueba?
+
+\section*{Parte 5. Dashboard, memorándum y reproducibilidad (30 puntos)}
+
+\ejercicio{5.1 (Dashboard)} Publica tus resultados en un dashboard interactivo, en Streamlit o en una página HTML, con una sección y al menos un control por cada una de las cuatro partes. Incluye la tabla MANOVA y la comparación dentro y fuera de muestra.
+
+\ejercicio{5.2 (Memorándum)} En un máximo de 250 palabras, dirigidas al comité de inversión de un fondo y sin usar el término \emph{valor propio}, indica qué método usarías para replicar tu sector y cómo construirías el portafolio. Incluye tres cifras de tu análisis y una limitación.
+
+\ejercicio{5.3 (Reproducibilidad)} Tu notebook debe correr de principio a fin, sin errores, con la semilla declarada.
+
+\end{document}

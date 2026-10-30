@@ -1,0 +1,7 @@
+__pycache__/
+.venv/
+.ipynb_checkpoints/
+montecarlo_*.csv
+*.aux
+*.log
+*.out
