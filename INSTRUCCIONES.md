@@ -2,7 +2,7 @@
 
 Fundamentos de Econometría (ECO515), Universidad Panamericana, Otoño 2026.
 
-**Equipos de hasta 3 personas.** Entregas por Blackboard. La fecha la indica el profesor.
+Entregas por Blackboard. La fecha la indica el profesor.
 
 El enunciado completo, con los ejercicios en papel, está en `ProyectoRegularizacion_FundamentosEconometria_Otono2026.pdf`.
 
@@ -59,7 +59,7 @@ Un lector que no conozca tu trabajo debe poder seguirlo sin ayuda. El notebook d
 - **Después de cada tabla o gráfica:** una interpretación breve, con tus cifras.
 - **Fuentes:** datos, referencias y cualquier herramienta de IA que hayas usado, indicando para qué.
 
-Tiempo estimado: de 8 a 12 horas de trabajo en equipo. La celda del Monte Carlo tarda unos minutos la primera vez.
+La celda del Monte Carlo tarda unos minutos la primera vez.
 
 ### Errores frecuentes
 
