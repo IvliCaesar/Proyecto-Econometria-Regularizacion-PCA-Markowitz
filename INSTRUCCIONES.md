@@ -17,9 +17,10 @@ El enunciado completo, con los ejercicios en papel, está en `ProyectoRegulariza
 
 | # | Entregable | Formato |
 |---|---|---|
-| 1 | Notebook completo, corrido de principio a fin sin errores | `Proyecto_Alumnos.ipynb` |
+| 1 | Notebook completo y **documentado**, corrido de principio a fin sin errores | `Proyecto_Alumnos.ipynb` |
 | 2 | Dashboard interactivo publicado | Enlace público |
 | 3 | Repositorio de GitHub con el código | Enlace público |
+| 4 | **Presentación oral del dashboard ante profesores** | En vivo |
 
 ## Paso 1. Preparar el ambiente
 
@@ -46,6 +47,17 @@ También puedes resolver el notebook en Google Colab, con el enlace de `README.m
 3. Completa cada `# TU CÓDIGO AQUÍ` y borra la línea `raise NotImplementedError`.
 4. Revisa que las comprobaciones salgan con ✅.
 5. Contesta cada ✍️ con tus cifras.
+6. Documenta el notebook, como se indica abajo.
+
+### Documentación del notebook (obligatoria)
+
+Un lector que no conozca tu trabajo debe poder seguirlo sin ayuda. El notebook debe incluir:
+
+- **Portada:** título, integrantes, matrícula usada como semilla y fecha.
+- **Antes de cada paso:** una celda de texto, con tus palabras, que diga qué vas a hacer y por qué.
+- **En tu código:** comentarios que expliquen las decisiones que no sean evidentes, y nombres de variables claros.
+- **Después de cada tabla o gráfica:** una interpretación breve, con tus cifras.
+- **Fuentes:** datos, referencias y cualquier herramienta de IA que hayas usado, indicando para qué.
 
 Tiempo estimado: de 8 a 12 horas de trabajo en equipo. La celda del Monte Carlo tarda unos minutos la primera vez.
 
@@ -107,6 +119,15 @@ python dashboard/generar_html.py
 3. En *Settings > Pages*, elige *Deploy from a branch*, la rama `main` y la carpeta `/docs`.
 4. Tras un par de minutos, abre `https://TU-USUARIO.github.io/TU-REPOSITORIO/` en una ventana de incógnito.
 
+## Paso 4. Presentar el dashboard
+
+Cada equipo presenta oralmente su dashboard, en vivo, ante profesores. La fecha y la duración las indica el profesor.
+
+- **Usa la versión publicada**, no una copia local, y lleva capturas de pantalla como respaldo.
+- **Todos los integrantes exponen** y deben poder responder preguntas sobre cualquier parte del proyecto y sobre su código.
+- **Muestra el dashboard funcionando:** mueve los controles y explica qué cambia y por qué.
+- **Termina con tu conclusión:** qué método usarías para replicar tu sector y cómo construirías el portafolio.
+
 ## Rúbrica (100 puntos)
 
 | Criterio | Puntos | Excelente |
@@ -116,9 +137,10 @@ python dashboard/generar_html.py
 | Parte 2: Multicolinealidad | 15 | Diagnóstico completo; elige el remedio según el objetivo: interpretar o predecir |
 | Parte 3: PCA | 15 | Las tres vías coinciden; explica la convergencia y da lectura financiera |
 | Parte 4: Markowitz | 15 | Solución cerrada verificada; evalúa fuera de muestra y reconoce sus limitaciones |
-| Interpretación y memorándum | 10 | Usa las cifras de su equipo; el comité entendería el memorándum |
-| Dashboard | 15 | Publicado, cumple los requisitos y un tercero lo entiende sin ayuda |
-| Reproducibilidad | 5 | `Restart & Run All` corre sin errores con la semilla declarada |
+| Interpretación y memorándum | 5 | Usa las cifras de su equipo; el comité entendería el memorándum |
+| Dashboard | 10 | Publicado, cumple los requisitos y un tercero lo entiende sin ayuda |
+| Presentación oral | 10 | Claridad, uso del dashboard en vivo y respuestas correctas de todos los integrantes |
+| Documentación y reproducibilidad | 5 | Notebook documentado; `Restart & Run All` corre sin errores con la semilla declarada |
 
 Las comprobaciones ✅ no garantizan los puntos: revisan la coherencia del cálculo, no la interpretación.
 
