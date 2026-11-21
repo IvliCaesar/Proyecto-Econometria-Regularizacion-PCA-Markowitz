@@ -1,0 +1,207 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb}
+\usepackage[margin=1.6cm]{geometry}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage{graphicx,pdflscape}
+\usepackage[table]{xcolor}
+\usepackage{url}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\renewcommand{\arraystretch}{1.25}
+\setlist{itemsep=0.15em,topsep=0.3em}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\criterio}[2]{\textbf{#1}\newline\footnotesize #2 puntos}
+\newcommand{\caja}{$\square$\ }
+\newcommand{\VIF}{\mathrm{VIF}}
+
+\begin{document}
+
+\newcommand{\logoUP}{%
+  \IfFileExists{logo_up.png}{\includegraphics[width=\linewidth]{logo_up}}{%
+    \framebox[\linewidth]{\rule{0pt}{2.2cm}\small Logo UP}}}
+\noindent
+\begin{minipage}[c]{0.16\linewidth}
+  \centering\logoUP
+\end{minipage}%
+\hfill
+\begin{minipage}[c]{0.64\linewidth}
+  \centering
+  {\bfseries UNIVERSIDAD PANAMERICANA}\\[5pt]
+  {\bfseries RÚBRICA DEL PROYECTO DE REGULARIZACIÓN,\\[2pt] PCA Y MARKOWITZ}\\[5pt]
+  {\bfseries FUNDAMENTOS DE ECONOMETRÍA}\\[5pt]
+  Dr. César Galindo -- Otoño 2026
+\end{minipage}%
+\hfill
+\begin{minipage}[c]{0.16\linewidth}
+  \centering\logoUP
+\end{minipage}
+
+\vspace{0.8em}
+
+\section*{Cómo se califica}
+
+El proyecto vale 100 puntos, repartidos en nueve criterios. Cada criterio se califica en uno de cuatro niveles y, dentro del nivel, con el puntaje que indica la tabla. Los criterios y los ejercicios del enunciado se corresponden así:
+
+\begin{center}
+\begin{tabular}{@{}llr@{}}
+\toprule
+Criterio & Ejercicios & Puntos\\
+\midrule
+1. Regularización & 1.1, 1.2, 1.3, 1.5 & 15\\
+2. Tabla MANOVA & 1.4 & 10\\
+3. Multicolinealidad & 2.1 a 2.7 & 15\\
+4. PCA & 3.1 a 3.6 & 15\\
+5. Markowitz & 4.1 a 4.8 & 15\\
+6. Interpretación y memorándum & preguntas abiertas y 5.2 & 5\\
+7. Dashboard & 5.1 & 10\\
+8. Presentación oral & 5.3 & 10\\
+9. Documentación y reproducibilidad & 5.4 & 5\\
+\midrule
+Total & & 100\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Escala de los niveles.}
+\begin{center}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Criterio de & Excelente & Bueno & En desarrollo & Insuficiente\\
+\midrule
+15 puntos & 14--15 & 11--13 & 7--10 & 0--6\\
+10 puntos & 9--10 & 7--8 & 4--6 & 0--3\\
+5 puntos & 5 & 4 & 2--3 & 0--1\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Reglas generales.}
+\begin{itemize}
+  \item \textbf{Cifras propias.} Toda respuesta se juzga con las cifras de la semilla declarada en la portada. Una parte resuelta con cifras de otra semilla recibe cero.
+  \item \textbf{Las comprobaciones no bastan.} Las comprobaciones automáticas del notebook revisan la coherencia de un cálculo, no su interpretación. Un notebook con todas las comprobaciones aprobadas y sin interpretación queda, como máximo, en el nivel \emph{En desarrollo} de cada parte.
+  \item \textbf{Ejercicios en papel.} Las deducciones 1.1, 2.1, 3.1 y 4.1 forman parte del criterio de su parte. Una deducción que solo enuncia el resultado, sin pasos, no cuenta.
+  \item \textbf{Inteligencia artificial.} Se permite, declarada en la sección de fuentes. Cualquier integrante debe poder explicar cualquier línea del código en la presentación oral; si no puede, el criterio correspondiente baja un nivel.
+  \item \textbf{Errores en cascada.} Si un error de una parte se arrastra a las siguientes, se descuenta una sola vez, siempre que lo que sigue sea coherente con el resultado equivocado.
+\end{itemize}
+
+\begin{landscape}
+\section*{Rúbrica por niveles}
+
+\footnotesize
+\begin{longtable}{@{}L{3.1cm}L{5.0cm}L{5.0cm}L{4.4cm}L{4.0cm}@{}}
+\toprule
+Criterio & Excelente & Bueno & En desarrollo & Insuficiente\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+
+\criterio{1. Regularización}{15} &
+Deduce Ridge, el encogimiento $d_j^2/(d_j^2+\lambda)$ y las soluciones con $X^\top X=nI$, y explica con ellas los ceros de Lasso. Estandariza y elige $\lambda$ solo con entrenamiento, sin fuga de información. La tabla de los cuatro métodos está completa, incluida la comparación por ventanas $n$. Interpreta Diebold--Mariano y reconoce que una ventana no basta. La conclusión 1.5 cubre las cuatro situaciones y la pérdida de inferencia con Lasso. &
+Cálculos correctos y completos, con una deducción incompleta o una conclusión que omite una de las cuatro situaciones o el costo inferencial de Lasso. &
+Ajusta los modelos, pero con fuga de información (estandariza o valida con datos de prueba), o falta la comparación por ventanas o Diebold--Mariano. La conclusión no se apoya en las cifras. &
+Faltan métodos o la comparación fuera de muestra; la conclusión es genérica o falta.\\
+\midrule
+
+\criterio{2. Tabla MANOVA}{10} &
+Construye $H_A$, $H_B$, $H_{AB}$ y $E$ a mano, verifica $H+E=T$ y los cuatro estadísticos coinciden con \texttt{statsmodels}. La tabla tiene grados de libertad, $F$, valor $p$ y $\eta^2$. Hace las ANOVA con Bonferroni, compara las varianzas por celda y matiza la confianza en los valores $p$. Elige un estadístico principal con razones y señala que el renglón de la interacción responde si el mejor método depende del escenario. &
+Matrices y tabla correctas; la discusión de supuestos o la elección del estadístico es superficial. &
+Usa solo \texttt{statsmodels}, o sus matrices no cuadran con $T$. Reporta valores $p$ sin tamaño de efecto. &
+Sin tabla MANOVA, o con una tabla que no se interpreta.\\
+\midrule
+
+\criterio{3. Multicolinealidad}{15} &
+Demuestra $\VIF=1/(1-r^2)$ y traduce el VIF a error estándar. Diagnóstico completo de Longley: VIF, tolerancia, número de condición, contraste entre la prueba $F$ y las pruebas $t$, y cambios de signo al omitir observaciones. Compara los seis remedios con validación \emph{leave-one-out} y explica por qué centrar solo sirve con términos polinomiales. Distingue interpretar de predecir y afirma que la multicolinealidad no sesga a MCO. &
+Diagnóstico y remedios correctos; la conclusión no separa del todo los objetivos de interpretar y predecir, o falta la comparación con los sectores (2.6). &
+Calcula los VIF pero compara pocos remedios, o confunde varianza con sesgo. &
+Diagnóstico incompleto y sin comparación de remedios.\\
+\midrule
+
+\criterio{4. PCA}{15} &
+Deduce con Lagrange que el primer componente es el vector propio de $\lambda_1$, con varianzas $\lambda_k$ y covarianzas cero, y resuelve el caso de $2\times2$ con tres iteraciones. Las tres vías coinciden: la teoría, la muestra (con ángulos que bajan al crecer $n$) y el método de la potencia con deflación, cuyo error sigue $(\lambda_2/\lambda_1)^t$. Explica qué pasa si $\lambda_2\approx\lambda_1$ o $v_0\perp a_1$. Lee el primer componente de los sectores como factor de mercado y deduce lo que implica para la diversificación. &
+Las tres vías coinciden, con una explicación incompleta de la convergencia o una lectura financiera breve. &
+Usa rutinas de valores propios en lugar del método de la potencia, o falta la comparación muestral. &
+Faltan dos de las tres vías o la interpretación.\\
+\midrule
+
+\criterio{5. Markowitz}{15} &
+Deduce la frontera, GMV y la tangente, y explica qué falla si $r_f\ge A/C$. La solución cerrada coincide con el optimizador y cumple las restricciones. Grafica la frontera con y sin ventas en corto y verifica el Sharpe tangente y los dos fondos. Compara las seis estrategias fuera de muestra con todas las métricas, el \emph{bootstrap} y la reestimación anual. Cuantifica la pérdida de Sharpe, explica las analogías con Ridge y PCR y reconoce las limitaciones de la prueba. &
+Implementación y frontera correctas; la evaluación fuera de muestra o la discusión de limitaciones está incompleta. &
+Solución cerrada sin verificar, o evaluación solo dentro de muestra. &
+Falta la solución cerrada o la evaluación de estrategias.\\
+\midrule
+
+\criterio{6. Interpretación y memorándum}{5} &
+Cada pregunta abierta del notebook se contesta con cifras del equipo. El memorándum cabe en 250 palabras, no usa el término \emph{valor propio}, da una recomendación clara con tres cifras y una limitación, y el comité lo entendería sin conocer la teoría. &
+Memorándum correcto con lenguaje demasiado técnico, o una pregunta abierta sin cifras. &
+Supera el límite, omite las cifras o la limitación. &
+Falta el memorándum.\\
+\midrule
+
+\criterio{7. Dashboard}{10} &
+Publicado y accesible en una ventana de incógnito. Tiene una sección por parte, con al menos un control que cambia un resultado (dos en la Parte 4), la tabla MANOVA, la comparación dentro y fuera de muestra en las Partes 1 y 4, gráficas con título, ejes con unidades y una frase de conclusión, y los nombres del equipo con la fuente de los datos. Un tercero lo entiende sin ayuda. &
+Cumple los requisitos mínimos con algún descuido de presentación: unidades faltantes o frases de conclusión vagas. &
+Publicado, pero le falta alguna sección, la tabla MANOVA o controles que cambien resultados. &
+No publicado, o solo con el ejemplo de la plantilla.\\
+\midrule
+
+\criterio{8. Presentación oral}{10} &
+Usa la versión publicada y mueve los controles explicando qué cambia y por qué. Todos los integrantes exponen y responden correctamente preguntas sobre cualquier parte y sobre su código. Cierra con la recomendación del memorándum. &
+Clara, con alguna respuesta imprecisa o un integrante que solo domina su parte. &
+Lee diapositivas en lugar de usar el dashboard, o varios integrantes no pueden responder. &
+No se presenta, o el dashboard no funciona y no hay respaldo.\\
+\midrule
+
+\criterio{9. Documentación y reproducibilidad}{5} &
+Portada con integrantes y semilla. Hay texto propio antes de cada paso, comentarios en el código, interpretación después de cada tabla o gráfica y fuentes declaradas, incluido el uso de IA. \texttt{Restart \& Run All} corre sin errores. &
+Corre sin errores, con la documentación incompleta en alguna parte. &
+Corre solo después de corregir algo menor, o casi no tiene texto propio. &
+No corre, o la semilla no está declarada.\\
+\end{longtable}
+\normalsize
+\end{landscape}
+
+\section*{Guía de la presentación oral}
+
+\textbf{Estructura sugerida.}
+\begin{enumerate}[label=\arabic*.]
+  \item El caso: qué sector replican, qué activos tiene el portafolio y qué semilla los eligió.
+  \item Una sección del dashboard por parte, moviendo al menos un control en cada una.
+  \item La conclusión: qué método usarían para replicar el sector y cómo construirían el portafolio.
+\end{enumerate}
+
+\textbf{Preguntas que pueden hacerles.} Cualquier integrante debe poder contestar cualquiera.
+\begin{itemize}
+  \item ¿Por qué se estandarizan las regresoras antes de Ridge y Lasso, y por qué con la media y la desviación estándar del entrenamiento?
+  \item Si Lasso dejó en cero el coeficiente de un sector, ¿significa que ese sector no está relacionado con el objetivo?
+  \item En la tabla MANOVA, ¿qué dice el renglón de la interacción? ¿Por qué no basta con dos ANOVA?
+  \item ¿La multicolinealidad sesga a MCO? ¿Por qué entonces la prueba $F$ rechaza y casi ninguna $t$ lo hace?
+  \item ¿Por qué el método de la potencia converge al primer componente? ¿Cuántas iteraciones necesitarían con sus datos?
+  \item ¿Qué representa económicamente el primer componente de los 30 sectores?
+  \item ¿Por qué el Sharpe del portafolio tangente cae tanto fuera de muestra? ¿Por qué GMV es más estable?
+  \item ¿En qué se parecen Ledoit--Wolf y Ridge? ¿Y la covarianza de componentes principales y PCR?
+  \item Señalen en su código dónde se calcula esta cifra del dashboard.
+\end{itemize}
+
+\section*{Lista de verificación antes de entregar}
+
+\begin{itemize}[label={}]
+  \item \caja La semilla y los nombres de los integrantes están en la portada del notebook y en el dashboard.
+  \item \caja No queda ninguna línea \texttt{raise NotImplementedError} ni ningún \texttt{TODO} en las plantillas.
+  \item \caja \texttt{Kernel > Restart \& Run All} corre de principio a fin sin errores.
+  \item \caja Cada pregunta abierta tiene respuesta con cifras del equipo.
+  \item \caja Hay texto propio antes de cada paso y una interpretación después de cada tabla o gráfica.
+  \item \caja Las deducciones 1.1, 2.1, 3.1 y 4.1 están en el notebook o escaneadas.
+  \item \caja El memorándum tiene como máximo 250 palabras, tres cifras y una limitación, y no usa el término \emph{valor propio}.
+  \item \caja El dashboard abre en una ventana de incógnito y cumple los requisitos mínimos.
+  \item \caja El repositorio es público y contiene el notebook corrido.
+  \item \caja La sección de fuentes declara los datos, las referencias y el uso de herramientas de IA.
+  \item \caja Llevan capturas de pantalla del dashboard como respaldo para la presentación.
+\end{itemize}
+
+\end{document}

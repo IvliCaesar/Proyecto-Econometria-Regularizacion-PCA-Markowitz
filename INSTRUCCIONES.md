@@ -130,6 +130,8 @@ Cada equipo presenta oralmente su dashboard, en vivo, ante profesores. La fecha 
 
 ## Rúbrica (100 puntos)
 
+La rúbrica completa, con los cuatro niveles de cada criterio (Excelente, Bueno, En desarrollo, Insuficiente), las reglas generales, una guía de la presentación oral con preguntas de práctica y la lista de verificación previa a la entrega, está en `Rubrica_Proyecto_FundamentosEconometria_Otono2026.pdf`. Resumen:
+
 | Criterio | Puntos | Excelente |
 |---|---|---|
 | Parte 1: Regularización | 15 | Comparación correcta dentro y fuera de muestra, sin fuga de información |

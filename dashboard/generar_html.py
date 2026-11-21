@@ -1,6 +1,6 @@
 """Plantilla del dashboard (Opción B: página HTML estática).
 
-Ejecutar desde la carpeta kit_alumnos:  python dashboard/generar_html.py
+Ejecutar desde la raíz del repositorio:  python dashboard/generar_html.py
 Crea docs/index.html, que se publica con GitHub Pages. La página no calcula en vivo: los
 controles (deslizadores y menús de Plotly) cambian entre resultados ya calculados aquí.
 Completa todo lo marcado con TODO.

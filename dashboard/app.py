@@ -1,6 +1,6 @@
 """Plantilla del dashboard (Opción A: Streamlit).
 
-Ejecutar desde la carpeta kit_alumnos:  streamlit run dashboard/app.py
+Ejecutar desde la raíz del repositorio:  streamlit run dashboard/app.py
 La pestaña 1 ya funciona como ejemplo. Completa todo lo marcado con TODO.
 """
 from pathlib import Path
@@ -27,7 +27,7 @@ def cargar_datos():
 datos = cargar_datos()
 sectores = [c for c in datos.columns if c not in FACTORES]
 excesos = datos[sectores].sub(datos["RF"], axis=0)
-corte = int(0.75 * len(datos))
+corte = 240  # entrenamiento: 2000-01 a 2019-12, como en el enunciado
 entrena, prueba = datos.index[:corte], datos.index[corte:]
 
 st.title("TODO: título de tu proyecto")

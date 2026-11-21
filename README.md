@@ -7,7 +7,8 @@ Dr. César Galindo. The course is taught in Spanish.
 
 - `ProyectoRegularizacion_FundamentosEconometria_Otono2026.pdf`: the exercises (LaTeX source alongside).
 - `Proyecto_Alumnos.ipynb`: step-by-step notebook with self-checks.
-- `INSTRUCCIONES.md`: setup, deliverables, dashboard publishing and rubric.
+- `Rubrica_Proyecto_FundamentosEconometria_Otono2026.pdf`: rubric with four levels per criterion, a guide to the oral presentation and a checklist before submission (LaTeX source alongside).
+- `INSTRUCCIONES.md`: setup, deliverables, dashboard publishing and a summary of the rubric.
 - `dashboard/`: Streamlit and static HTML templates.
 - `datos/`: monthly returns of 30 industry portfolios, 2000-01 to 2026-09, from the
   [Kenneth R. French Data Library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html).
